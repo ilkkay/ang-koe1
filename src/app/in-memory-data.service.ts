@@ -1,15 +1,13 @@
-// import { InMemoryDbService } from 'angular-in-memory-web-api';
-
 import { InMemoryDbService, InMemoryBackendService } from 'angular-in-memory-web-api';
 import { ResponseOptions, XSRFStrategy, BrowserXhr, XHRBackend, HttpModule } from "@angular/http";
 import { Injector, NgModule } from '@angular/core';
-import { environment } from 'environments/environment.prod';
+import { environment } from 'environments/environment';
 import { Env } from './environments/env';
+// https://stackoverflow.com/questions/40214211/disable-angular2-in-memory-web-api-for-production
 
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const projects = [
-      /*{ format: '', id: 0, name: 'Empty ', personId: 0, sourceLocale: '', type: '' },*/
       { format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' },
       { format: 'PROPERTIES', id: 2, name: 'presta', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' },
       { format: 'PROPERTIES', id: 3, name: 'liferay', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' }
@@ -18,20 +16,22 @@ export class InMemoryDataService implements InMemoryDbService {
   }
 }
 
+export function backendProvider(injector: Injector, browser: BrowserXhr,
+  xsrf: XSRFStrategy, options: ResponseOptions): any {
+  if (environment.production) {
+    return new XHRBackend(browser, options, xsrf);
+  } else {
+    return new InMemoryBackendService(injector, new InMemoryDataService(), {
+    });
+  }
+}
+
 @NgModule({
   imports: [HttpModule],
   providers: [
     {
       provide: XHRBackend,
-      useFactory: (injector: Injector, browser: BrowserXhr,
-        xsrf: XSRFStrategy, options: ResponseOptions): any => {
-        if (environment.production) {
-          return new XHRBackend(browser, options, xsrf);
-        } else {
-          return new InMemoryBackendService(injector, new InMemoryDataService(), {
-          });
-        }
-      },
+      useFactory: backendProvider,
       deps: [Injector, BrowserXhr, XSRFStrategy, ResponseOptions]
     }
   ]

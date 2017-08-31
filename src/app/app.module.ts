@@ -4,9 +4,6 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
-// https://stackoverflow.com/questions/40214211/disable-angular2-in-memory-web-api-for-production
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
 import { AppHttpModule } from './in-memory-data.service';
 import { Env } from './environments/env';
 
@@ -20,7 +17,6 @@ import { ProjectDetailComponent } from './project-detail.component';
   imports: [
     BrowserModule,
     HttpModule,
-    // InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppHttpModule,
     RouterModule.forRoot([
       {
