@@ -15,7 +15,7 @@ import { PROJECTS } from './mock-projects';
 @Injectable()
 export class ProjectsService {
 
-  private projectsUrl = 'http://localhost:8080/api/projects'; //api/projects';
+  private projectsUrl = 'http://localhost:8080/api/projects/'; //api/projects';
 
   results: Project[];
 
@@ -38,7 +38,7 @@ export class ProjectsService {
   getProject(id: number): Promise<Project> {
     console.log('Entering ProjectsService.getProject() with id ' + id);
 
-    const url = `${this.projectsUrl}/${id}`;
+    const url = `${this.projectsUrl}${id}`;
     return this.http.get(url)
       .toPromise()
       .then(response => {
@@ -53,7 +53,7 @@ export class ProjectsService {
   }
 
   update(project: Project): Promise<Project> {
-    const url = `${this.projectsUrl}/${project.id}`;
+    const url = `${this.projectsUrl}${project.id}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     return this.http
@@ -64,7 +64,7 @@ export class ProjectsService {
   }
 
   delete(id: number): Promise<void> {
-    const url = `${this.projectsUrl}/${id}`;
+    const url = `${this.projectsUrl}${id}`;
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     return this.http.delete(url, { headers: headers })

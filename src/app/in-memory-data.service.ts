@@ -3,7 +3,7 @@
 import { InMemoryDbService, InMemoryBackendService } from 'angular-in-memory-web-api';
 import { ResponseOptions, XSRFStrategy, BrowserXhr, XHRBackend, HttpModule } from "@angular/http";
 import { Injector, NgModule } from '@angular/core';
-import { environment } from 'environments/environment';
+import { environment } from 'environments/environment.prod';
 import { Env } from './environments/env';
 
 export class InMemoryDataService implements InMemoryDbService {
