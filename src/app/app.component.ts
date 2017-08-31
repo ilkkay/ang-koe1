@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { OnInit, Component } from '@angular/core';
+
+import { Project } from './project';
+import { PROJECTS } from './mock-projects';
+import { ProjectsService } from './projects.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'my-app',
+  templateUrl: 'app.component.html',
+  providers: [ProjectsService]
 })
+
 export class AppComponent {
-  title = 'app';
+  title = 'Translate IT 2';
+
 }
+

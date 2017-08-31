@@ -1,0 +1,17 @@
+<div *ngIf="project">
+  <h2>{{project.name}} details!</h2>
+  <div>
+    <label>id: </label>{{project.id}}
+  </div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="project.name" placeholder="name" />
+  </div>
+  <p></p>
+  <button (click)="setNew()">New</button>
+  <button (click)="save()">Save</button>
+  <button class="delete" (click)="delete(hero); $event.stopPropagation()">Delete</button>
+</div>
+<div>
+</div>
+

@@ -1,0 +1,17 @@
+<h2>Projects</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th>FORMAT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projects">
+      <td>{{project.name}}</td>
+      <td>{{project.type}}</td>
+      <td><button (click)="edit()" [routerLink]="['/projects', project.id]">Edit</button></td>
+    </tr>
+  </tbody>
+</table>
