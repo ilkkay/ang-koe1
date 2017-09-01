@@ -14,8 +14,8 @@ import { ProjectsService } from './projects.service';
 })
 export class ProjectDetailComponent implements OnInit {
 
-
   @Input() project: Project;
+  // @Input('selectedId') selectedId: number;
 
   constructor(
     private projectsService: ProjectsService,
@@ -25,12 +25,26 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loggingMsg('Entering ngOnInit()');
+    // this.selectedId = 0;
 
+    this.loggingMsg('Entering ngOnInit()');
     this.route.paramMap
       .switchMap((params: ParamMap) =>
         this.projectsService.getProject(+params.get('id')))
       .subscribe(project => this.project = project);
+
+    /*
+        if (this.selectedId === 0) {
+          this.route.paramMap
+            .switchMap((params: ParamMap) =>
+              this.projectsService.getProject(+params.get('id')))
+            .subscribe(project => this.project = project);
+        } else {
+          this.projectsService.getProject(this.selectedId)
+            .then(project => this.project = project);
+
+        }
+    */
   }
 
   setNew(): void {
@@ -44,7 +58,10 @@ export class ProjectDetailComponent implements OnInit {
   delete(): void {
     this.projectsService
       .delete(this.project.id)
-      .then(() => this.loggingMsg('Deleted project: ' + this.project.name));
+      .then(() => {
+        this.loggingMsg('Deleted project: ' + this.project.name);
+        this.goBack();
+      });
   }
 
   save(): void {
@@ -53,6 +70,7 @@ export class ProjectDetailComponent implements OnInit {
     } else {
       this.update();
     }
+  this.goBack();
   }
 
   update(): void {
@@ -66,6 +84,10 @@ export class ProjectDetailComponent implements OnInit {
 
     this.projectsService.create(this.project)
       .then(() => this.loggingMsg('Created project: ' + this.project.name));
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   private loggingMsg(msg: string): void {

@@ -27,11 +27,11 @@ import { ProjectDetailComponent } from './project-detail.component';
         path: 'projects',
         component: ProjectsComponent
       },
-      /*{
+      {
         path: '',
         redirectTo: '/projects',
         pathMatch: 'full'
-      },*/
+      },
     ]),
     FormsModule // <-- import the FormsModule before binding with [(ngModel)]
   ],

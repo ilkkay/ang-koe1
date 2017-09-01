@@ -1,3 +1,7 @@
+<!--
+<app-project-detail></app-project-detail>
+-->
+
 <h2>Projects</h2>
 
 <table>
@@ -11,7 +15,8 @@
     <tr *ngFor="let project of projects">
       <td>{{project.name}}</td>
       <td>{{project.type}}</td>
-      <td><button (click)="edit()" [routerLink]="['/projects', project.id]">Edit</button></td>
+      <td><button (click)="detail()" [routerLink]="['/projects', project.id]">Detail</button></td>
+      <td><button (click)="edit()">Edit</button></td>
     </tr>
   </tbody>
 </table>

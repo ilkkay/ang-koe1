@@ -11,26 +11,27 @@ import { ProjectsService } from './projects.service';
 })
 export class ProjectsComponent implements OnInit {
 
+  selectedId: number;
   projects: Project[] = [];
+  error: any;
 
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private projectsService: ProjectsService) {
+    this.selectedId = 1; // mock
+  }
 
-  getProjects(): void {
+  getProjects(): Promise<any> {
     console.log('Entering getProjects(): ');
-    this.projectsService.getProjects().then(
+    return this.projectsService.getProjects().then(
       projects => {
         this.projects = projects;
         console.log('Project count: ' + projects.length);
-      });
+      }).catch(error => this.error = error);
   }
 
   ngOnInit(): void {
     console.log('Entering ProjectsComponent.ngOnInit(): ');
 
     this.getProjects();
-/*
-    this.projectsService.getProjects()
-      .then(projects => this.projects = projects.slice(1, 5));
-*/
+
   }
 }
