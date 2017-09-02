@@ -1,0 +1,40 @@
+<h2>Edit Project </h2>
+
+<div *ngIf="project">
+  <div>
+    <label>id: </label>{{project.id}}
+  </div>
+  <div>
+    <label>name: </label>
+
+    <input [(ngModel)]="project.name" placeholder="name" />
+
+  </div>
+  <p></p>
+
+  <button (click)="setNew()">New</button>
+  <button (click)="save()">Save</button>
+  <button class="delete" (click)="delete(project); $event.stopPropagation()">Delete</button>
+</div>
+<div>
+</div>
+
+<h2>Project List</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th>FORMAT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projects">
+      <td>{{project.name}}</td>
+      <td>{{project.type}}</td>
+      <td><button (click)="editProject()" [routerLink]="['/projectsmain', project.id]">Edit</button></td>
+    </tr>
+  </tbody>
+</table>
+
+

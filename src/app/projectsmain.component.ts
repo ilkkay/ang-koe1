@@ -8,47 +8,50 @@ import { Project } from './project';
 import { ProjectsService } from './projects.service';
 
 @Component({
-  selector: 'app-project-detail',
-  templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.css']
+  selector: 'app-projectsmain',
+  templateUrl: './projectsmain.component.html',
+  styleUrls: ['./projectsmain.component.css']
 })
-export class ProjectDetailComponent implements OnInit {
 
-  @Input('project') project: Project;
-  // @Input('selectedId') selectedId: number;
+export class ProjectsmainComponent implements OnInit {
+
+  project: Project = new Project();
+  projects: Project[] = [];
+  error: any;
 
   constructor(
     private projectsService: ProjectsService,
-    private route: ActivatedRoute,
-    private location: Location
-  ) { }
+    private route: ActivatedRoute
+  ) { this.setNew(); }
 
-  ngOnInit() {
+  getProjects(): Promise<any> {
+    console.log('Entering getProjects(): ');
+    return this.projectsService.getProjects().then(
+      projects => {
+        this.projects = projects;
+        console.log('Project count: ' + projects.length);
+      }).catch(error => this.error = error);
+  }
 
-    // this.selectedId = 0;
+  ngOnInit(): void {
+    console.log('Entering ProjectsComponent.ngOnInit(): ');
 
-    this.loggingMsg('Entering ngOnInit()');
+    this.getProjects();
+
     this.route.paramMap
       .switchMap((params: ParamMap) =>
         this.projectsService.getProject(+params.get('id')))
       .subscribe(project => this.project = project);
-
-    /*
-        if (this.selectedId === 0) {
-          this.route.paramMap
-            .switchMap((params: ParamMap) =>
-              this.projectsService.getProject(+params.get('id')))
-            .subscribe(project => this.project = project);
-        } else {
-          this.projectsService.getProject(this.selectedId)
-            .then(project => this.project = project);
-
-        }
-    */
   }
 
+  edit(project: Project): void {
+    this.project = Object.assign({}, (project));
+  }
+
+  editProject(): void { }
+
   setNew(): void {
-    this.project = {
+    this.project = <Project>{
       format: 'PROPERTIES', id: 0, name: '',
       personId: 10, sourceLocale: 'en_EN', type: 'UTF_8'
     };
@@ -60,7 +63,8 @@ export class ProjectDetailComponent implements OnInit {
       .delete(this.project.id)
       .then(() => {
         this.loggingMsg('Deleted project: ' + this.project.name);
-        this.goBack();
+        this.getProjects();
+        this.setNew();
       });
   }
 
@@ -70,7 +74,7 @@ export class ProjectDetailComponent implements OnInit {
     } else {
       this.update();
     }
-  this.goBack();
+    this.getProjects();
   }
 
   update(): void {
@@ -83,11 +87,10 @@ export class ProjectDetailComponent implements OnInit {
     if (!this.project.name) { return; }
 
     this.projectsService.create(this.project)
-      .then(() => this.loggingMsg('Created project: ' + this.project.name));
-  }
-
-  goBack(): void {
-    this.location.back();
+      .then(project => {
+        this.loggingMsg('Created project: ' + this.project.name);
+        this.project = project;
+      });
   }
 
   private loggingMsg(msg: string): void {
@@ -95,3 +98,4 @@ export class ProjectDetailComponent implements OnInit {
   };
 
 }
+

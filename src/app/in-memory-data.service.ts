@@ -16,7 +16,7 @@ export class InMemoryDataService implements InMemoryDbService {
   }
 }
 
-export function backendProvider(injector: Injector, browser: BrowserXhr,
+export function backendFactory(injector: Injector, browser: BrowserXhr,
   xsrf: XSRFStrategy, options: ResponseOptions): any {
   if (environment.production) {
     return new XHRBackend(browser, options, xsrf);
@@ -31,7 +31,7 @@ export function backendProvider(injector: Injector, browser: BrowserXhr,
   providers: [
     {
       provide: XHRBackend,
-      useFactory: backendProvider,
+      useFactory: backendFactory,
       deps: [Injector, BrowserXhr, XSRFStrategy, ResponseOptions]
     }
   ]

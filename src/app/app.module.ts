@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { ProjectsService } from './projects.service';
 import { ProjectsComponent } from './projects.component';
 import { ProjectDetailComponent } from './project-detail.component';
+import { ProjectsmainComponent } from './projectsmain.component';
 
 @NgModule({
   imports: [
@@ -20,16 +21,29 @@ import { ProjectDetailComponent } from './project-detail.component';
     AppHttpModule,
     RouterModule.forRoot([
       {
-        path: 'projects/:id',
+        path: 'projectsdetail/:id',
         component: ProjectDetailComponent
       },
       {
-        path: 'projects',
+        path: 'projects/:id',
         component: ProjectsComponent
       },
       {
+        path: 'projects',
+        redirectTo: '/projects/1',
+        pathMatch: 'full'
+      },
+      {
+        path: 'projectsmain/:id',
+        component: ProjectsmainComponent
+      },
+      {
+        path: 'projectsmain',
+        component: ProjectsmainComponent
+      },
+      {
         path: '',
-        redirectTo: '/projects',
+        redirectTo: '/projectsmain',
         pathMatch: 'full'
       },
     ]),
@@ -38,7 +52,8 @@ import { ProjectDetailComponent } from './project-detail.component';
   declarations: [
     AppComponent,
     ProjectsComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
+    ProjectsmainComponent
   ],
   providers: [
     ProjectsService,
