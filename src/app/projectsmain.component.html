@@ -2,17 +2,44 @@
 
 <div *ngIf="project">
   <div>
-    <label>id: </label>{{project.id}}
+    <label class="projectid">id: </label>{{project.id}}
   </div>
+<!--
   <div>
     <label>name: </label>
-
     <input [(ngModel)]="project.name" placeholder="name" />
-
   </div>
-  <p></p>
+-->
 
-  <button (click)="setNew()">New</button>
+  <form [formGroup]="projectForm">
+    <label>name: </label>
+    <input type="text" formControlName="name" placeholder="project name" >
+    <!-- <p *ngIf="projectForm.controls.name.errors">Project name is required!</p> -->
+    <p *ngIf = "(projectForm.controls.name.hasError('minlength')
+        || projectForm.controls.name.hasError('maxlength'))
+        && !projectForm.controls.name.hasError('required')">
+      Name should contain between 6 to 10 characters
+    </p>
+
+    <p></p>
+    <label>language: </label>
+    <input type="text" formControlName="sourceLocale" placeholder="en_EN, ..._" >
+    <p *ngIf = "projectForm.controls.sourceLocale.hasError('pattern')
+        && !projectForm.controls.sourceLocale.hasError('required')">
+      Language code should have 5 characters like en_EN
+    </p>
+  </form>
+
+<!--
+  <div>
+    <label>name: </label>
+    <input type="text" [formControl]="nameControl" placeholder="project name">
+    <p *ngIf="nameControl.errors">Project name is required!</p>
+  </div>
+-->
+
+  <p></p>
+  <button (click)="setDefault()">New</button>
   <button (click)="save()">Save</button>
   <button class="delete" (click)="delete(project); $event.stopPropagation()">Delete</button>
 </div>
@@ -32,7 +59,7 @@
     <tr *ngFor="let project of projects">
       <td>{{project.name}}</td>
       <td>{{project.type}}</td>
-      <td><button (click)="editProject()" [routerLink]="['/projectsmain', project.id]">Edit</button></td>
+      <td><button [routerLink]="['/projectsmain', project.id]">Edit</button></td>
     </tr>
   </tbody>
 </table>

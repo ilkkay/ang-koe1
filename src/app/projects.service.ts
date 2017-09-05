@@ -15,8 +15,18 @@ import { PROJECTS } from './mock-projects';
 @Injectable()
 export class ProjectsService {
 
-  private projectsUrl = 'http://localhost:8080/api/projects/'; //api/projects';
-
+  private projectsUrl = 'http://localhost:8080/api/projects/'; // api/projects';
+// TODO:create proxy.conf.json and add http://localhost:8080/
+/*
+{
+"/api/*":{
+"target": "http://localhost:8080",
+"secure": false,
+"logLevel": "debug",
+}
+And edit the package.json file's start script to be
+"start": "ng serve --proxy-config proxy.conf.json
+*/
   results: Project[];
 
   constructor(private http: Http, private env: Env) { }
@@ -57,9 +67,27 @@ export class ProjectsService {
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     return this.http
-      .put(url, JSON.stringify(project), { headers: headers })
+      .put(url,
+      // JSON.stringify(project)
+     JSON.stringify({
+        format: project.format,
+        id: project.id,
+        name: project.name,
+        personId: project.personId,
+        type: project.type,
+        sourceLocale: project.sourceLocale
+      })
+      ,
+      { headers: headers })
       .toPromise()
-      .then(() => project)
+      .then(response => {
+        console.log('Response from update: ' + response.text());
+        if (this.env.isInProduction()) {
+          return response.json() as Project[];
+        } else {
+          return response.json().data as Project[];
+        }
+      })
       .catch(this.handleError);
   }
 
@@ -88,7 +116,15 @@ export class ProjectsService {
       }),
       { headers: headers })
       .toPromise()
-      .then(res => res.json().data as Project)
+      // .then(res => res.json() as Project)
+      .then(response => {
+        console.log('Response from create: ' + response.text());
+        if (this.env.isInProduction()) {
+          return response.json() as Project[];
+        } else {
+          return response.json().data as Project[];
+        }
+      })
       .catch(this.handleError);
   }
 

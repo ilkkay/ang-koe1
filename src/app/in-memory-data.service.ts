@@ -9,8 +9,8 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const projects = [
       { format: 'PROPERTIES', id: 1, name: 'dotcms', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' },
-      { format: 'PROPERTIES', id: 2, name: 'presta', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' },
-      { format: 'PROPERTIES', id: 3, name: 'liferay', personId: 10, sourceLocale: 'en_EN', type: 'UTF_8' }
+      { format: 'XLIFF', id: 2, name: 'presta', personId: 10, sourceLocale: 'fi_FI', type: 'ISO8859_1' },
+      { format: 'PROPERTIES', id: 3, name: 'liferay', personId: 10, sourceLocale: 'fr_FR', type: 'UTF_8' }
     ];
     return { projects };
   }

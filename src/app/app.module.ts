@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+// import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { ReactiveFormsModule,  FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
@@ -10,7 +11,7 @@ import { Env } from './environments/env';
 import { AppComponent } from './app.component';
 
 import { ProjectsService } from './projects.service';
-import { ProjectsComponent } from './projects.component';
+import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailComponent } from './project-detail.component';
 import { ProjectsmainComponent } from './projectsmain.component';
 
@@ -30,8 +31,7 @@ import { ProjectsmainComponent } from './projectsmain.component';
       },
       {
         path: 'projects',
-        redirectTo: '/projects/1',
-        pathMatch: 'full'
+        component: ProjectsComponent
       },
       {
         path: 'projectsmain/:id',
@@ -47,7 +47,7 @@ import { ProjectsmainComponent } from './projectsmain.component';
         pathMatch: 'full'
       },
     ]),
-    FormsModule // <-- import the FormsModule before binding with [(ngModel)]
+    ReactiveFormsModule, FormsModule // <-- import the FormsModule before binding with [(ngModel)]
   ],
   declarations: [
     AppComponent,

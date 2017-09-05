@@ -1,0 +1,108 @@
+<div class="generic-container">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><span class="lead">Project </span></div>
+    <div class="panel-body">
+      <div class="formcontainer">
+        <!--
+	            <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+	            <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>
+              -->
+
+        <form [formGroup]="projectForm" class="form-horizontal">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-md-2 control-lable" for="uname">Application name</label>
+              <div class="col-md-7">
+                <input type="text" formControlName="name" placeholder="Enter project name">
+                <p *ngIf="(projectForm.controls.name.hasError('minlength')
+                              || projectForm.controls.name.hasError('maxlength'))
+                              && !projectForm.controls.name.hasError('required')">
+                  Name should contain between 6 to 20 characters
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-md-2 control-lable" for="sourcelocale">Source language</label>
+              <div class="col-md-7">
+                <input type="text" formControlName="sourceLocale" placeholder="en_EN, ..._">
+                <p *ngIf="projectForm.controls.sourceLocale.hasError('pattern')
+                              && !projectForm.controls.sourceLocale.hasError('required')">
+                  Language code should have 5 characters like en_EN
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-md-2 control-lable" for="format">
+								  File format: <!-- ({{project.format}}) -->
+                  <select class="form-control" id="format" formControlName="format">
+                    <option *ngFor="let f of formats" [ngValue]="f">{{f}}</option>
+                  </select>
+							</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-md-2 control-lable" for="type">
+								  Type: <!-- ({{project.type}}) -->
+                  <select class="form-control" id="type" formControlName="type">
+                    <option *ngFor="let t of types" [ngValue]="t">{{t}}</option>
+                  </select>
+							  </label>
+            </div>
+          </div>
+          <pre>{{projectForm.value | json}}</pre>
+
+          <div class="row">
+            <div class="form-actions floatRight">
+              <button (click)="setDefault()">New</button>
+              <button (click)="save()">Save</button>
+              <button class="delete" (click)="delete(project); $event.stopPropagation()">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><span class="lead">Current projects </span></div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>FORMAT</th>
+              <th>CHARSET</th>
+              <th>LNG</th>
+              <th>CNT</th>
+              <th width="100"></th>
+              <th width="100"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prj of projects">
+              <td>{{prj.name}}</td>
+              <td>{{prj.format}}</td>
+              <td>{{prj.type}}</td>
+              <td>{{prj.sourceLocale}}</td>
+              <td>0</td>
+              <div class="form-actions floatRight">
+                <td><button [routerLink]="['/projectsmain', prj.id]" class="btn">Edit</button></td>
+                <td><button [routerLink]="['/projectsmain', prj.id]" class="btn">Get works</button></td>
+              </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
