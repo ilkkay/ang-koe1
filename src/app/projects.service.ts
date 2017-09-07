@@ -15,18 +15,18 @@ import { PROJECTS } from './mock-projects';
 @Injectable()
 export class ProjectsService {
 
-  private projectsUrl = 'http://localhost:8080/api/projects/'; // api/projects';
-// TODO:create proxy.conf.json and add http://localhost:8080/
-/*
-{
-"/api/*":{
-"target": "http://localhost:8080",
-"secure": false,
-"logLevel": "debug",
-}
-And edit the package.json file's start script to be
-"start": "ng serve --proxy-config proxy.conf.json
-*/
+  private projectsUrl = 'http://localhost:8080/api/projects/'; // api/projects/';
+  // TODO:create proxy.conf.json and add http://localhost:8080/
+  /*
+  {
+  "/api/*":{
+  "target": "http://localhost:8080",
+  "secure": false,
+  "logLevel": "debug",
+  }
+  And edit the package.json file's start script to be
+  "start": "ng serve --proxy-config proxy.conf.json
+  */
   results: Project[];
 
   constructor(private http: Http, private env: Env) { }
@@ -68,15 +68,16 @@ And edit the package.json file's start script to be
 
     return this.http
       .put(url,
+      project
       // JSON.stringify(project)
-     JSON.stringify({
-        format: project.format,
-        id: project.id,
-        name: project.name,
-        personId: project.personId,
-        type: project.type,
-        sourceLocale: project.sourceLocale
-      })
+      /*JSON.stringify({
+         format: project.format,
+         id: project.id,
+         name: project.name,
+         personId: project.personId,
+         type: project.type,
+         sourceLocale: project.sourceLocale
+       })*/
       ,
       { headers: headers })
       .toPromise()
@@ -108,15 +109,10 @@ And edit the package.json file's start script to be
 
     return this.http
       .post(this.projectsUrl,
-      JSON.stringify({
-        name: project.name,
-        format: project.format,
-        type: project.type,
-        sourceLocale: project.sourceLocale
-      }),
+      // JSON.stringify(project),
+      project,
       { headers: headers })
       .toPromise()
-      // .then(res => res.json() as Project)
       .then(response => {
         console.log('Response from create: ' + response.text());
         if (this.env.isInProduction()) {
@@ -129,8 +125,13 @@ And edit the package.json file's start script to be
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
+    if (this.env.isInProduction) {
+      console.error('An error occurred: ', error.text());
+      return Promise.reject(error);
+    } else {
+      console.error('An error occurred: ', error.message);
+      return Promise.reject(error.message || error);
+    }
   }
 }
 
